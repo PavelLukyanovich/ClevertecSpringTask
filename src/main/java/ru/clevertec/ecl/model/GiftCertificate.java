@@ -3,16 +3,17 @@ package ru.clevertec.ecl.model;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Data
-@Component
 public class GiftCertificate {
 
     private int id;
     private String name;
     private String description;
-    private int price;
+    private Integer price;
     private String duration;
-    private String createDate;
-    private String lastUpdateDate;
+    private LocalDate createDate;
+    private LocalDate lastUpdateDate;
 
 }

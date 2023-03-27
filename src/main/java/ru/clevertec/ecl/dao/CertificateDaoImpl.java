@@ -1,5 +1,6 @@
 package ru.clevertec.ecl.dao;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,13 +11,10 @@ import ru.clevertec.ecl.model.GiftCertificate;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class CertificateDaoImpl implements CertificateDao {
     private final JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    public CertificateDaoImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     @Override
     public List<GiftCertificate> getCertificates() {

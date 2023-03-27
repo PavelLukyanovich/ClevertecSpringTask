@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.clevertec.ecl.dao.TagDao;
 import ru.clevertec.ecl.model.Tag;
+import ru.clevertec.ecl.service.TagService;
 
 import java.util.List;
 
@@ -12,21 +13,34 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TagController {
 
-    private final TagDao tagDao;
+    private final TagService tagService;
 
 
     @GetMapping()
-    @ResponseBody
     public List<Tag> getTags() {
 
         return tagDao.getTags();
     }
 
     @GetMapping("/{id}")
-    @ResponseBody
     public Tag getTagById(@PathVariable("id") Integer id) {
 
         return tagDao.getTagById(id);
     }
+    @PostMapping
+    public TagDto createTag(@RequestBody CreateTagRequest request) {
+        return tagService.createTag(request);
+    }
+
+    @PutMapping
+    public TagDto updateTag(@RequestBody UpdateTagRequest request) {
+        return tagService.createTag(request);
+    }
+    @DeleteMapping("/{id}")
+    public TagDto deleteTag(@PathVariable Integer id) {
+        return tagService.deleteTag(id);
+    }
+
+
 }
 

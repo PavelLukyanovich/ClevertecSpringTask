@@ -1,4 +1,4 @@
-package ru.clevertec.ecl.model;
+package ru.clevertec.ecl.model.entities;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;

@@ -1,7 +1,7 @@
 package ru.clevertec.ecl.exception;
 
 import lombok.Getter;
-import ru.clevertec.ecl.model.GiftCertificate;
+import ru.clevertec.ecl.model.entities.GiftCertificate;
 
 @Getter
 public class NoSuchElementsException extends RuntimeException {

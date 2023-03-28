@@ -1,26 +1,26 @@
-package ru.clevertec.ecl.dao;
+package ru.clevertec.ecl.repository;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.clevertec.ecl.exception.NoSuchElementsException;
-import ru.clevertec.ecl.model.GiftCertificate;
+import ru.clevertec.ecl.model.entities.GiftCertificate;
+import ru.clevertec.ecl.model.requests.CreateCertificateRequest;
+import ru.clevertec.ecl.model.requests.UpdateCertificateRequest;
 
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class CertificateDaoImpl implements CertificateDao {
+public class CertificateRepositoryImpl implements CertificateRepository {
     private final JdbcTemplate jdbcTemplate;
 
 
     @Override
     public List<GiftCertificate> getCertificates() {
 
-        List<GiftCertificate> listCertificates = jdbcTemplate.query("SELECT * FROM ", new BeanPropertyRowMapper<>(GiftCertificate.class));
-        return listCertificates;
+        return jdbcTemplate.query("SELECT * FROM gift_certificate", new BeanPropertyRowMapper<>(GiftCertificate.class));
     }
 
     @Override
@@ -29,22 +29,19 @@ public class CertificateDaoImpl implements CertificateDao {
                 .stream()
                 .findAny()
                 .orElse(null);
-        if (certificate == null) {
-            throw new NoSuchElementsException(certificate);
-        }
         return certificate;
     }
 
     @Override
-    public boolean save(GiftCertificate giftCertificate) {
-        jdbcTemplate.update("INSERT INTO gift_certificate VALUES(1, ?, ?, ?, ?, ?, ?,?)",
-                giftCertificate.getName(), giftCertificate.getDescription(), giftCertificate.getPrice(), giftCertificate.getDuration(),
-                giftCertificate.getCreateDate(), giftCertificate.getLastUpdateDate());
+    public boolean create(CreateCertificateRequest request) {
+        jdbcTemplate.update("INSERT INTO gift_certificate (id)  VALUES(DEFAULT, ?, ?, ?, ?, ?, ?)",
+                request.getName(), request.getDescription(), request.getPrice(), request.getDuration(),
+                request.getCreateDate(), request.getLastUpdateDate());
         return true;
     }
 
     @Override
-    public boolean update(int id, GiftCertificate updatedGiftCertificate) {
+    public boolean update(int id, UpdateCertificateRequest updatedGiftCertificate) {
         jdbcTemplate.update("UPDATE gift_certificate SET name=?, description=?, price=?, duration=?, createdate=?, lastupdatedate=?, tag=? WHERE id=?", updatedGiftCertificate.getName(),
                 updatedGiftCertificate.getDescription(), updatedGiftCertificate.getPrice(), updatedGiftCertificate.getDuration(),
                 updatedGiftCertificate.getCreateDate(), updatedGiftCertificate.getLastUpdateDate(), id);

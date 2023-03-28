@@ -1,4 +1,9 @@
 package ru.clevertec.ecl.model.requests;
 
-public class CreateCertificateRequest {
+import lombok.Data;
+
+import java.time.LocalDate;
+
+@Data
+public class CreateCertificateRequest extends CertificateRequest{
 }

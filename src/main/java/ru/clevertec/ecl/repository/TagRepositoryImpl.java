@@ -1,23 +1,23 @@
-package ru.clevertec.ecl.dao;
+package ru.clevertec.ecl.repository;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import ru.clevertec.ecl.model.Tag;
+import ru.clevertec.ecl.model.entities.Tag;
+import ru.clevertec.ecl.model.requests.CreateTagRequest;
 import ru.clevertec.ecl.model.requests.TagRequest;
+import ru.clevertec.ecl.model.requests.UpdateTagRequest;
+import ru.clevertec.ecl.utils.mupper.TagMapper;
 
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class TagRepositoryImpl implements TagRepository {
 
     private final JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    public TagRepositoryImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     @Override
     public List<Tag> getTags() {
@@ -33,8 +33,7 @@ public class TagRepositoryImpl implements TagRepository {
     }
 
     @Override
-    public int update(int id, TagRequest request) {
-
+    public int update(int id, UpdateTagRequest request) {
         return jdbcTemplate.update("INSERT INTO tag WHERE  VALUES (?)");
     }
 
@@ -45,7 +44,7 @@ public class TagRepositoryImpl implements TagRepository {
     }
 
     @Override
-    public int create(TagRequest request) {
-        return jdbcTemplate.update("INSERT INTO tag VALUES (?)", request.getName());
+    public int create(CreateTagRequest request) {
+        return jdbcTemplate.update("INSERT INTO tag (name) VALUES (?)", request.getName());
     }
 }

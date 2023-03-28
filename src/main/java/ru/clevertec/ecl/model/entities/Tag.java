@@ -1,11 +1,11 @@
-package ru.clevertec.ecl.model;
+package ru.clevertec.ecl.model.entities;
 
 import lombok.Data;
 
 @Data
 public class Tag {
 
-    private long id;
+    private int id;
     private String name;
 
 }

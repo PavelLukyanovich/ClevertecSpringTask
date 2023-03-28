@@ -5,16 +5,17 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.clevertec.ecl.model.Tag;
+import ru.clevertec.ecl.model.requests.TagRequest;
 
 import java.util.List;
 
 @Component
-public class TagDaoImpl implements TagDao {
+public class TagRepositoryImpl implements TagRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public TagDaoImpl(JdbcTemplate jdbcTemplate) {
+    public TagRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -32,17 +33,19 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
-    public void save(Tag tag) {
+    public int update(int id, TagRequest request) {
 
-    }
-
-    @Override
-    public void update(int id, Tag updatedTag) {
-
+        return jdbcTemplate.update("INSERT INTO tag WHERE  VALUES (?)");
     }
 
     @Override
     public void delete(int id) {
+        jdbcTemplate.update("DELETE FROM tag WHERE id=?", id);
 
+    }
+
+    @Override
+    public int create(TagRequest request) {
+        return jdbcTemplate.update("INSERT INTO tag VALUES (?)", request.getName());
     }
 }

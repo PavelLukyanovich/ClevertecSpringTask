@@ -1,4 +1,5 @@
 package ru.clevertec.ecl.model.responses;
 
-public class ResponseApi<T> {
+public record ResponseApi<T>(T data) {
+
 }

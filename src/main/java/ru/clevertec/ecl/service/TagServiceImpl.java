@@ -18,7 +18,6 @@ import java.util.logging.Logger;
 @RequiredArgsConstructor
 public class TagServiceImpl implements TagService {
 
-
     private static final Logger LOGGER = Logger.getLogger(TagServiceImpl.class.getName());
     private final TagRepository tagRepository;
 
@@ -49,6 +48,6 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public TagDto deleteTag(Integer id) {
-        return null;
+        return tagRepository.delete(id);
     }
 }

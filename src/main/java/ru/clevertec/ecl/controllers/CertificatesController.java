@@ -22,10 +22,10 @@ public class CertificatesController {
 
     @GetMapping()
     public List<CertificateDto> getCertificatesBy(@RequestParam(required = false) String tagName,
-                                          @RequestParam(required = false) String certName,
-                                          @RequestParam(required = false) String certDescription,
-                                          @RequestParam(required = false) SortType sortDate,
-                                          @RequestParam(required = false) SortType sortName) {
+                                                  @RequestParam(required = false) String certName,
+                                                  @RequestParam(required = false) String certDescription,
+                                                  @RequestParam(required = false) SortType sortDate,
+                                                  @RequestParam(required = false) SortType sortName) {
 
         CertificateParamDto certificateParam = new CertificateParamDto();
         certificateParam.setTagName(tagName);
@@ -37,22 +37,25 @@ public class CertificatesController {
     }
 
     @GetMapping("/{id}")
-    public CertificateDto getCertificateById(@PathVariable("id") Integer id) {
 
+    public CertificateDto getCertificateById(@PathVariable("id") Integer id) {
         return certificateService.getCertificateById(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+
     public boolean createCertificate(@RequestBody CreateCertificateRequest request) {
         return certificateService.createCertificate(request);
     }
 
     @PutMapping("/{id}")
+
     public boolean updateCertificate(@RequestBody UpdateCertificateRequest request, @PathVariable String id) {
         return certificateService.updateCertificate(Integer.valueOf(id), request);
     }
 
     @DeleteMapping("/{id}")
+
     public boolean deleteCertificate(@PathVariable Integer id) {
         return certificateService.deleteCertificate(id);
     }

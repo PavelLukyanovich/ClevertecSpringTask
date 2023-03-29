@@ -1,9 +1,10 @@
 package ru.clevertec.ecl.model.entities;
 
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 public class GiftCertificate {
@@ -15,5 +16,6 @@ public class GiftCertificate {
     private String duration;
     private LocalDate createDate;
     private LocalDate lastUpdateDate;
+    private Set<Tag> tagList = new HashSet<>();
 
 }

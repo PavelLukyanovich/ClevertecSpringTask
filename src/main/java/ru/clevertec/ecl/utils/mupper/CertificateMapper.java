@@ -11,6 +11,5 @@ public interface CertificateMapper {
     CertificateMapper INSTANCE = Mappers.getMapper(CertificateMapper.class);
 
     CertificateDto certificateToCertificateDto(GiftCertificate giftCertificate);
-
     GiftCertificate certificateDtoToCertificate(CertificateDto certificateDto);
 }

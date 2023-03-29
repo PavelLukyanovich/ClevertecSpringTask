@@ -10,12 +10,8 @@ import java.util.List;
 public interface TagService {
 
     int createTag(CreateTagRequest request);
-
     TagDto deleteTag(Integer id);
-
     TagDto getTagById(Integer id);
-
     int updateTag(Integer id, UpdateTagRequest request);
-
     List<TagDto> getTags();
 }

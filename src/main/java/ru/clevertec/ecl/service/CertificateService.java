@@ -10,13 +10,10 @@ import ru.clevertec.ecl.model.requests.UpdateCertificateRequest;
 import java.util.List;
 
 public interface CertificateService {
+
     boolean createCertificate(CreateCertificateRequest request);
-
     boolean deleteCertificate(Integer id);
-
     CertificateDto getCertificateById(Integer id);
-
     boolean updateCertificate(Integer id, UpdateCertificateRequest request);
-
     List<CertificateDto> getCertificates(CertificateParamDto sertificateParam);
 }

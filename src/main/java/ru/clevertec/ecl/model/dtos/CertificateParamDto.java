@@ -6,6 +6,7 @@ import ru.clevertec.ecl.utils.SortType;
 
 @Data
 public class CertificateParamDto {
+
     private String tagName;
     private String certName;
     private String certDescription;

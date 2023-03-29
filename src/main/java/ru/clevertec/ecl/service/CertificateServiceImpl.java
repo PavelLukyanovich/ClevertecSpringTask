@@ -20,9 +20,7 @@ import java.util.stream.Stream;
 public class CertificateServiceImpl implements CertificateService{
 
     private static final Logger LOGGER = Logger.getLogger(CertificateServiceImpl.class.getName());
-
     private final CertificateRepository certificateRepository;
-
 
     @Override
     public boolean createCertificate(CreateCertificateRequest request) {

@@ -1,4 +1,4 @@
-package ru.clevertec.ecl.model.requests;
+package ru.clevertec.ecl.model.requests.tag;
 
 import lombok.Data;
 

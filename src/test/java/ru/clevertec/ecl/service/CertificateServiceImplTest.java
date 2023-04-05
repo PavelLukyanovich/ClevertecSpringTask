@@ -6,11 +6,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.clevertec.ecl.model.dtos.CertificateDto;
-import ru.clevertec.ecl.model.dtos.CertificateParamDto;
 import ru.clevertec.ecl.model.entities.GiftCertificate;
-import ru.clevertec.ecl.model.requests.CreateCertificateRequest;
-import ru.clevertec.ecl.model.requests.UpdateCertificateRequest;
-import ru.clevertec.ecl.repository.CertificateRepository;
+import ru.clevertec.ecl.model.requests.certificate.CreateCertificateRequest;
+import ru.clevertec.ecl.model.requests.certificate.UpdateCertificateRequest;
+import ru.clevertec.ecl.repository.certificate.CertificateRepository;
+import ru.clevertec.ecl.service.certificate.CertificateServiceImpl;
+import ru.clevertec.ecl.utils.mapper.CertificateMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,16 +28,17 @@ class CertificateServiceImplTest {
     private CertificateRepository certificateRepository;
 
     @Test
-    public void whenCreateCertificate_thanReturnTrue() {
+    public void whenCreateCertificate_thanReturnCreatedCertificate() {
         CreateCertificateRequest request = new CreateCertificateRequest();
-        when(certificateRepository.create(request)).thenReturn(true);
-        boolean result = certificateService.createCertificate(request);
-        assertTrue(result);
+        GiftCertificate certificate = new GiftCertificate();
+        when(certificateRepository.create(certificate)).thenReturn(certificate);
+        CertificateDto result = certificateService.createCertificate(request);
+        assertEquals(CertificateMapper.INSTANCE.certificateToCertificateDto(certificate), result);
     }
 
     @Test
     public void whenDeleteCertificate_thanReturnTrue() {
-        Integer id = 1;
+        Long id = 1L;
         when(certificateRepository.delete(id)).thenReturn(true);
         boolean result = certificateService.deleteCertificate(id);
         assertTrue(result);
@@ -44,7 +46,7 @@ class CertificateServiceImplTest {
 
     @Test
     public void whenGetCertificateById_thanReturnCorrectCertificateDto() {
-        Integer id = 1;
+        Long id = 1L;
         GiftCertificate certificate = new GiftCertificate();
         when(certificateRepository.getCertificateById(id)).thenReturn(certificate);
         CertificateDto certificateDto = certificateService.getCertificateById(id);
@@ -53,7 +55,7 @@ class CertificateServiceImplTest {
 
     @Test
     public void whenUpdateCertificate_thanReturnTrue() {
-        Integer id = 1;
+        Long id = 1L;
         UpdateCertificateRequest request = new UpdateCertificateRequest();
         when(certificateRepository.update(id, request)).thenReturn(true);
         boolean result = certificateService.updateCertificate(id, request);
@@ -62,10 +64,10 @@ class CertificateServiceImplTest {
 
     @Test
     public void whenGetCertificates_thanReturnCorrectCertificateDtos() {
-        CertificateParamDto certificateParam = new CertificateParamDto();
+        CertificateDto certificateDto = new CertificateDto();
         List<GiftCertificate> certificates = new ArrayList<>();
         when(certificateRepository.getCertificates()).thenReturn(certificates);
-        List<CertificateDto> certificateDtos = certificateService.getCertificates(certificateParam);
+        List<CertificateDto> certificateDtos = certificateService.getCertificates(certificateDto);
         assertNotNull(certificateDtos);
 
     }

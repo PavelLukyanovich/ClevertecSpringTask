@@ -1,14 +1,14 @@
 package ru.clevertec.ecl.exception;
 
 import lombok.Getter;
-import ru.clevertec.ecl.model.entities.GiftCertificate;
+import ru.clevertec.ecl.model.entities.BaseEntity;
 
 @Getter
 public class NoSuchElementsException extends RuntimeException {
 
-    private final GiftCertificate notFoundGiftCertificate;
+    private final BaseEntity baseEntity;
 
-    public NoSuchElementsException(GiftCertificate notFoundGiftCertificate) {
-        this.notFoundGiftCertificate = notFoundGiftCertificate;
+    public NoSuchElementsException(BaseEntity baseEntity) {
+        this.baseEntity = baseEntity;
     }
 }

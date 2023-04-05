@@ -1,10 +1,10 @@
-package ru.clevertec.ecl.model.requests;
+package ru.clevertec.ecl.model.requests.certificate;
 
 import lombok.Data;
 import ru.clevertec.ecl.model.entities.Tag;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 @Data
 public class CertificateRequest {
@@ -12,8 +12,8 @@ public class CertificateRequest {
     private String name;
     private String description;
     private Integer price;
-    private String duration;
+    private Integer duration;
     private LocalDate createDate;
     private LocalDate lastUpdateDate;
-    private Set<Tag> tagSet;
+    private List<Tag> tagList;
 }

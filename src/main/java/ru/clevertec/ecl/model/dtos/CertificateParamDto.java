@@ -12,4 +12,5 @@ public class CertificateParamDto {
     private String certDescription;
     private SortType sortDate;
     private SortType sortName;
+
 }

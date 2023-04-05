@@ -1,13 +1,13 @@
-package ru.clevertec.ecl.model.requests;
+package ru.clevertec.ecl.model.requests.tag;
 
 import lombok.Data;
 import ru.clevertec.ecl.model.entities.GiftCertificate;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
 public class TagRequest {
 
     private String name;
-    private Set<GiftCertificate> certificateSet;
+    private List<GiftCertificate> certificateList;
 }

@@ -49,10 +49,10 @@ public class CertificateRepositoryImpl implements CertificateRepository {
             }
         }
         if (StringUtils.isNotBlank(certificateParamDto.getSortDate())) {
-            hqlQuery.append(" order by gc.createDate desc");
+            hqlQuery.append(" order by gc.createDate sortDate");
         }
         if (StringUtils.isNotBlank(certificateParamDto.getSortName())) {
-            hqlQuery.append(" order by gc.name asc");
+            hqlQuery.append(" order by gc.name sortName");
         }
         query = session.createQuery(hqlQuery.toString(), GiftCertificate.class);
         if (StringUtils.isNotBlank(certificateParamDto.getTagName())) {

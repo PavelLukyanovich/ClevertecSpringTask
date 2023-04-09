@@ -1,4 +1,4 @@
-package ru.clevertec.ecl.exception;
+package ru.clevertec.ecl.exceptions;
 
 public class JsonParseException extends RuntimeException {
 }

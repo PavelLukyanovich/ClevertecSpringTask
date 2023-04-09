@@ -1,5 +1,6 @@
 package ru.clevertec.ecl.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,6 +22,7 @@ public class Tag implements BaseEntity<Long> {
     @Column(name = "name")
     private String name;
     @ManyToMany(mappedBy = "tagList", fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<GiftCertificate> certificateList = new ArrayList<>();
 
     public void addCertificate(GiftCertificate certificate) {

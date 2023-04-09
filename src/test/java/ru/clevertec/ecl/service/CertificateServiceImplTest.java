@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.clevertec.ecl.model.dtos.CertificateDto;
+import ru.clevertec.ecl.model.dtos.CertificateParamDto;
 import ru.clevertec.ecl.model.entities.GiftCertificate;
 import ru.clevertec.ecl.model.requests.certificate.CreateCertificateRequest;
 import ru.clevertec.ecl.model.requests.certificate.UpdateCertificateRequest;
@@ -64,10 +65,10 @@ class CertificateServiceImplTest {
 
     @Test
     public void whenGetCertificates_thanReturnCorrectCertificateDtos() {
-        CertificateDto certificateDto = new CertificateDto();
+        CertificateParamDto certificateParamDto = new CertificateParamDto();
         List<GiftCertificate> certificates = new ArrayList<>();
-        when(certificateRepository.getCertificates()).thenReturn(certificates);
-        List<CertificateDto> certificateDtos = certificateService.getCertificates(certificateDto);
+        when(certificateRepository.getCertificates(certificateParamDto)).thenReturn(certificates);
+        List<CertificateDto> certificateDtos = certificateService.getCertificates(certificateParamDto);
         assertNotNull(certificateDtos);
 
     }

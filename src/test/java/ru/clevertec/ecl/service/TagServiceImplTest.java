@@ -66,8 +66,8 @@ class TagServiceImplTest {
     @Test
     public void whenDeleteTag_thanReturnCorrectTagDto() {
         Integer id = 1;
-        Long tag = new TagDto();
-        when(tagRepository.delete(Long.valueOf(id))).thenReturn(tag);
+        TagDto tag = new TagDto();
+        when(tagRepository.delete(Long.valueOf(id))).thenReturn(Long.valueOf(id));
         Long resultTagDto = tagService.deleteTag(Long.valueOf(id));
         assertEquals(tag, resultTagDto);
     }

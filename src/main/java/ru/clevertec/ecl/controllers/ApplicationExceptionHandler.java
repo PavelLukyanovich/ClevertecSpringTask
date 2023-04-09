@@ -4,8 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.clevertec.ecl.exception.JsonParseException;
-import ru.clevertec.ecl.exception.NoSuchElementsException;
+import ru.clevertec.ecl.exceptions.JsonParseException;
+import ru.clevertec.ecl.exceptions.NoSuchElementsException;
 import ru.clevertec.ecl.model.ErrorResponse;
 
 @RestControllerAdvice

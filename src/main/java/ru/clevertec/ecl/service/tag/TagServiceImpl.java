@@ -2,8 +2,8 @@ package ru.clevertec.ecl.service.tag;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.clevertec.ecl.exception.JsonParseException;
-import ru.clevertec.ecl.exception.NoSuchElementsException;
+import ru.clevertec.ecl.exceptions.JsonParseException;
+import ru.clevertec.ecl.exceptions.NoSuchElementsException;
 import ru.clevertec.ecl.model.dtos.TagDto;
 import ru.clevertec.ecl.model.entities.Tag;
 import ru.clevertec.ecl.model.requests.tag.CreateTagRequest;

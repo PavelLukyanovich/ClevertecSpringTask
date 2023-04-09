@@ -1,15 +1,19 @@
 package ru.clevertec.ecl.repository.certificate;
 
+import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Component;
+import ru.clevertec.ecl.model.dtos.CertificateParamDto;
 import ru.clevertec.ecl.model.entities.GiftCertificate;
 import ru.clevertec.ecl.model.requests.certificate.UpdateCertificateRequest;
 
+import java.util.ArrayList;
 import java.util.List;
+
 
 @Component
 @RequiredArgsConstructor
@@ -19,14 +23,61 @@ public class CertificateRepositoryImpl implements CertificateRepository {
 
 
     @Override
-    public List<GiftCertificate> getCertificates() {
+    public List<GiftCertificate> getCertificates(CertificateParamDto certificateParamDto) {
 
         Session session = this.sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        Query<GiftCertificate> query = session.createQuery("from GiftCertificate c left join Tag t where c.name= :name " +
-                "or c.description= :description or t.name= :tName", GiftCertificate.class);
-        query.setProperties(GiftCertificate.class);
-        List<GiftCertificate> giftCertificateList = query.list();
+        StringBuilder hqlQuery = new StringBuilder("select gc from GiftCertificate gc");
+        Query<GiftCertificate> query;
+        List<GiftCertificate> giftCertificateList = new ArrayList<>();
+        if (StringUtils.isNotBlank(certificateParamDto.getTagName())) {
+
+            hqlQuery.append(" join gc.tagList t where t.name = :tagName");
+        }
+        if (StringUtils.isNotBlank(certificateParamDto.getCertName())) {
+            if (StringUtils.isNotBlank(certificateParamDto.getTagName())) {
+                hqlQuery.append(" and gc.name = :certName");
+            } else {
+                hqlQuery.append(" where gc.name = :certName");
+            }
+        }
+        if (StringUtils.isNotBlank(certificateParamDto.getCertDescription())) {
+            if (StringUtils.isNotBlank(certificateParamDto.getTagName()) || StringUtils.isNotBlank(certificateParamDto.getCertName())) {
+                hqlQuery.append(" and gc.description = :certDescription");
+            } else {
+                hqlQuery.append(" where gc.description = :certDescription");
+            }
+        }
+        if (StringUtils.isNotBlank(certificateParamDto.getSortDate())) {
+            hqlQuery.append(" order by gc.createDate desc");
+        }
+        if (StringUtils.isNotBlank(certificateParamDto.getSortName())) {
+            hqlQuery.append(" order by gc.name asc");
+        }
+        query = session.createQuery(hqlQuery.toString(), GiftCertificate.class);
+        if (StringUtils.isNotBlank(certificateParamDto.getTagName())) {
+
+            query.setParameter("tagName", certificateParamDto.getTagName());
+        }
+        if (StringUtils.isNotBlank(certificateParamDto.getCertName())) {
+
+            query.setParameter("certName", certificateParamDto.getCertName());
+        }
+        if (StringUtils.isNotBlank(certificateParamDto.getCertDescription())) {
+
+            query.setParameter("certDescription", certificateParamDto.getCertDescription());
+        }
+        if (StringUtils.isNotBlank(certificateParamDto.getSortDate())) {
+
+            query.setParameter("sortDate", certificateParamDto.getSortDate());
+        }
+        if (StringUtils.isNotBlank(certificateParamDto.getSortName())) {
+
+            query.setParameter("sortName", certificateParamDto.getSortName());
+        }
+
+        giftCertificateList = query.list();
+
         transaction.commit();
         session.close();
         return giftCertificateList;

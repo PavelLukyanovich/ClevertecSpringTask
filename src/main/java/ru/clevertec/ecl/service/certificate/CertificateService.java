@@ -1,6 +1,7 @@
 package ru.clevertec.ecl.service.certificate;
 
 import ru.clevertec.ecl.model.dtos.CertificateDto;
+import ru.clevertec.ecl.model.dtos.CertificateParamDto;
 import ru.clevertec.ecl.model.requests.certificate.CreateCertificateRequest;
 import ru.clevertec.ecl.model.requests.certificate.UpdateCertificateRequest;
 
@@ -16,5 +17,5 @@ public interface CertificateService {
 
     boolean updateCertificate(Long id, UpdateCertificateRequest request);
 
-    List<CertificateDto> getCertificates(CertificateDto certificateDto);
+    List<CertificateDto> getCertificates(CertificateParamDto certificateParamDto);
 }

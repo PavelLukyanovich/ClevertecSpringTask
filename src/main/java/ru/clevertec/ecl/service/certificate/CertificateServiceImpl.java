@@ -2,9 +2,10 @@ package ru.clevertec.ecl.service.certificate;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.clevertec.ecl.exception.JsonParseException;
-import ru.clevertec.ecl.exception.NoSuchElementsException;
+import ru.clevertec.ecl.exceptions.JsonParseException;
+import ru.clevertec.ecl.exceptions.NoSuchElementsException;
 import ru.clevertec.ecl.model.dtos.CertificateDto;
+import ru.clevertec.ecl.model.dtos.CertificateParamDto;
 import ru.clevertec.ecl.model.entities.GiftCertificate;
 import ru.clevertec.ecl.model.requests.certificate.CreateCertificateRequest;
 import ru.clevertec.ecl.model.requests.certificate.UpdateCertificateRequest;
@@ -48,7 +49,9 @@ public class CertificateServiceImpl implements CertificateService {
 
         if (!Objects.nonNull(certificateRepository.getCertificateById(id))) {
             return CertificateMapper.INSTANCE.certificateToCertificateDto(certificateRepository.getCertificateById(id));
-        } else throw new NoSuchElementsException(new GiftCertificate(id, null, null, null, null, null, null, null));
+        } else {
+            throw new NoSuchElementsException(new GiftCertificate(id, null, null, null, null, null, null, null));
+        }
     }
 
     @Override
@@ -65,13 +68,15 @@ public class CertificateServiceImpl implements CertificateService {
             certificateById.setLastUpdateDate(request.getLastUpdateDate());
             certificateRepository.update(id, request);
             return true;
-        } else throw new NoSuchElementsException(CertificateMapper.INSTANCE.requestToCertificate(request));
+        } else{
+            throw new NoSuchElementsException(CertificateMapper.INSTANCE.requestToCertificate(request));
+        }
     }
 
     @Override
-    public List<CertificateDto> getCertificates(CertificateDto certificateDto) {
+    public List<CertificateDto> getCertificates(CertificateParamDto certificateParamDto) {
 
-        List<GiftCertificate> certificates = certificateRepository.getCertificates();
+        List<GiftCertificate> certificates = certificateRepository.getCertificates(certificateParamDto);
         return certificates.stream().map(CertificateMapper.INSTANCE::certificateToCertificateDto).toList();
     }
 }

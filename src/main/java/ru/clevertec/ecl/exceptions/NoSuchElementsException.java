@@ -1,4 +1,4 @@
-package ru.clevertec.ecl.exception;
+package ru.clevertec.ecl.exceptions;
 
 import lombok.Getter;
 import ru.clevertec.ecl.model.entities.BaseEntity;

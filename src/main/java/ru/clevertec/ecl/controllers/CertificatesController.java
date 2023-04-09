@@ -5,12 +5,10 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.clevertec.ecl.model.dtos.CertificateDto;
 import ru.clevertec.ecl.model.dtos.CertificateParamDto;
-import ru.clevertec.ecl.model.entities.GiftCertificate;
 import ru.clevertec.ecl.model.requests.certificate.CreateCertificateRequest;
 import ru.clevertec.ecl.model.requests.certificate.UpdateCertificateRequest;
 import ru.clevertec.ecl.service.certificate.CertificateService;
-import ru.clevertec.ecl.utils.SortType;
-import ru.clevertec.ecl.utils.mapper.CertificateParamMapper;
+
 
 import java.util.List;
 
@@ -24,12 +22,11 @@ public class CertificatesController {
 
 
     @GetMapping()
-    public List<CertificateDto> getCertificatesBy(GiftCertificate certificate,
-                                                  @RequestParam(required = false) String tagName,
+    public List<CertificateDto> getCertificatesBy(@RequestParam(required = false) String tagName,
                                                   @RequestParam(required = false) String certName,
                                                   @RequestParam(required = false) String certDescription,
-                                                  @RequestParam(required = false) SortType sortDate,
-                                                  @RequestParam(required = false) SortType sortName) {
+                                                  @RequestParam(required = false) String sortDate,
+                                                  @RequestParam(required = false) String sortName) {
 
         CertificateParamDto certificateParam = new CertificateParamDto();
         certificateParam.setTagName(tagName);
@@ -38,8 +35,7 @@ public class CertificatesController {
         certificateParam.setSortDate(sortDate);
         certificateParam.setSortName(sortName);
 
-        CertificateDto certificateDto = CertificateParamMapper.mapper(certificateParam, certificate);
-        return certificateService.getCertificates(certificateDto);
+        return certificateService.getCertificates(certificateParam);
     }
 
     @GetMapping("/{id}")

@@ -1,19 +1,19 @@
-package ru.clevertec.ecl.model;
+package ru.clevertec.ecl.model.requests.certificate;
 
 import lombok.Data;
-import org.springframework.stereotype.Component;
+import ru.clevertec.ecl.model.entities.Tag;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
-public class GiftCertificate {
+public class CertificateRequest {
 
-    private int id;
     private String name;
     private String description;
     private Integer price;
-    private String duration;
+    private Integer duration;
     private LocalDate createDate;
     private LocalDate lastUpdateDate;
-
+    private List<Tag> tagList;
 }

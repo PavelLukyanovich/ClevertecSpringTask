@@ -1,11 +1,12 @@
 package ru.clevertec.ecl.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import ru.clevertec.ecl.model.Tag;
 import ru.clevertec.ecl.model.dtos.TagDto;
-import ru.clevertec.ecl.model.requests.TagRequest;
-import ru.clevertec.ecl.service.TagService;
+import ru.clevertec.ecl.model.requests.tag.CreateTagRequest;
+import ru.clevertec.ecl.model.requests.tag.UpdateTagRequest;
+import ru.clevertec.ecl.service.tag.TagService;
 
 import java.util.List;
 
@@ -18,30 +19,28 @@ public class TagController {
 
 
     @GetMapping()
-    public List<Tag> getTags() {
+    public List<TagDto> getTags() {
         return tagService.getTags();
     }
 
     @GetMapping("/{id}")
-    public Tag getTagById(@PathVariable("id") Integer id) {
+    public TagDto getTagById(@PathVariable("id") Long id) {
         return tagService.getTagById(id);
     }
 
-    @PostMapping
-    public int createTag(@RequestBody TagRequest request) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public TagDto createTag(@RequestBody CreateTagRequest request) {
         return tagService.createTag(request);
     }
 
-    @PutMapping
-    public TagDto updateTag(@RequestBody TagRequest request, Integer id) {
+    @PutMapping("/{id}")
+    public Long updateTag(@RequestBody UpdateTagRequest request, @PathVariable Long id) {
         return tagService.updateTag(id, request);
     }
 
     @DeleteMapping("/{id}")
-    public TagDto deleteTag(@PathVariable Integer id) {
+    public Long deleteTag(@PathVariable Long id) {
         return tagService.deleteTag(id);
     }
-
-
 }
 

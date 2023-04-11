@@ -1,4 +1,4 @@
-package ru.clevertec.ecl.model.dtos;
+package ru.clevertec.ecl.model.requests.tag;
 
 import lombok.Data;
 import ru.clevertec.ecl.model.entities.GiftCertificate;
@@ -6,9 +6,8 @@ import ru.clevertec.ecl.model.entities.GiftCertificate;
 import java.util.List;
 
 @Data
-public class TagDto {
+public class TagRequest {
 
-    private Long id;
     private String name;
     private List<GiftCertificate> certificateList;
 }

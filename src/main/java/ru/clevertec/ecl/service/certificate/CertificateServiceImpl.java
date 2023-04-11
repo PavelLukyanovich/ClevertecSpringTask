@@ -37,17 +37,18 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
-    public boolean deleteCertificate(Long id) {
+    public Long deleteCertificate(Long id) {
 
-        if (!Objects.isNull(certificateRepository.getCertificateById(id))) {
+        GiftCertificate certificateById = certificateRepository.getCertificateById(id);
+        if (Objects.nonNull(certificateById)) {
             return certificateRepository.delete(id);
-        } else throw new NoSuchElementsException(certificateRepository.getCertificateById(id));
+        } else throw new NoSuchElementsException(certificateById);
     }
 
     @Override
     public CertificateDto getCertificateById(Long id) {
 
-        if (!Objects.nonNull(certificateRepository.getCertificateById(id))) {
+        if (Objects.nonNull(certificateRepository.getCertificateById(id))) {
             return CertificateMapper.INSTANCE.certificateToCertificateDto(certificateRepository.getCertificateById(id));
         } else {
             throw new NoSuchElementsException(new GiftCertificate(id, null, null, null, null, null, null, null));
@@ -60,15 +61,9 @@ public class CertificateServiceImpl implements CertificateService {
 
         GiftCertificate certificateById = certificateRepository.getCertificateById(id);
         if (Objects.nonNull(certificateById)) {
-            certificateById.setName(request.getName());
-            certificateById.setDescription(request.getDescription());
-            certificateById.setPrice(request.getPrice());
-            certificateById.setDuration(request.getDuration());
-            certificateById.setCreateDate(request.getCreateDate());
-            certificateById.setLastUpdateDate(request.getLastUpdateDate());
             certificateRepository.update(id, request);
             return true;
-        } else{
+        } else {
             throw new NoSuchElementsException(CertificateMapper.INSTANCE.requestToCertificate(request));
         }
     }

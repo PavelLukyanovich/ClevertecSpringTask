@@ -11,7 +11,7 @@ public interface CertificateService {
 
     CertificateDto createCertificate(CreateCertificateRequest request);
 
-    boolean deleteCertificate(Long id);
+    Long deleteCertificate(Long id);
 
     CertificateDto getCertificateById(Long id);
 

@@ -11,7 +11,6 @@ public class CertificateDto {
 
     private Long id;
     private String name;
-    private String tagName;
     private String description;
     private Integer price;
     private Integer duration;

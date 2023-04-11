@@ -11,8 +11,8 @@ import ru.clevertec.ecl.model.dtos.CertificateParamDto;
 import ru.clevertec.ecl.model.entities.GiftCertificate;
 import ru.clevertec.ecl.model.requests.certificate.UpdateCertificateRequest;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Component
@@ -29,7 +29,7 @@ public class CertificateRepositoryImpl implements CertificateRepository {
         Transaction transaction = session.beginTransaction();
         StringBuilder hqlQuery = new StringBuilder("select gc from GiftCertificate gc");
         Query<GiftCertificate> query;
-        List<GiftCertificate> giftCertificateList = new ArrayList<>();
+        List<GiftCertificate> giftCertificateList;
         if (StringUtils.isNotBlank(certificateParamDto.getTagName())) {
 
             hqlQuery.append(" join gc.tagList t where t.name = :tagName");
@@ -48,13 +48,18 @@ public class CertificateRepositoryImpl implements CertificateRepository {
                 hqlQuery.append(" where gc.description = :certDescription");
             }
         }
-        if (StringUtils.isNotBlank(certificateParamDto.getSortDate())) {
-            hqlQuery.append(" order by gc.createDate sortDate");
+        if (Objects.nonNull(certificateParamDto.getSortDate())) {
+            hqlQuery.append(" order by gc.createDate ").append(certificateParamDto.getSortDate().name());
         }
-        if (StringUtils.isNotBlank(certificateParamDto.getSortName())) {
-            hqlQuery.append(" order by gc.name sortName");
+        if (Objects.nonNull(certificateParamDto.getSortName())) {
+            String operation = Objects.nonNull(certificateParamDto.getSortDate()) ? (",") : (" order by");
+            hqlQuery.append(operation).append(" gc.name ").append(certificateParamDto.getSortName().name());
         }
-        query = session.createQuery(hqlQuery.toString(), GiftCertificate.class);
+
+        String queryString = hqlQuery.toString();
+        System.out.println(queryString);
+        query = session.createQuery(queryString, GiftCertificate.class);
+
         if (StringUtils.isNotBlank(certificateParamDto.getTagName())) {
 
             query.setParameter("tagName", certificateParamDto.getTagName());
@@ -66,14 +71,6 @@ public class CertificateRepositoryImpl implements CertificateRepository {
         if (StringUtils.isNotBlank(certificateParamDto.getCertDescription())) {
 
             query.setParameter("certDescription", certificateParamDto.getCertDescription());
-        }
-        if (StringUtils.isNotBlank(certificateParamDto.getSortDate())) {
-
-            query.setParameter("sortDate", certificateParamDto.getSortDate());
-        }
-        if (StringUtils.isNotBlank(certificateParamDto.getSortName())) {
-
-            query.setParameter("sortName", certificateParamDto.getSortName());
         }
 
         giftCertificateList = query.list();
@@ -110,23 +107,47 @@ public class CertificateRepositoryImpl implements CertificateRepository {
 
         Session session = this.sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        GiftCertificate giftCertificate = session.get(GiftCertificate.class, id);
-        session.update(giftCertificate);
+
+        GiftCertificate loadCertificate = session.load(GiftCertificate.class, id);
+        if (Objects.nonNull(request.getName())) {
+            loadCertificate.setName(request.getName());
+        }
+        if (Objects.nonNull(request.getDescription())) {
+            loadCertificate.setDescription(request.getDescription());
+        }
+        if (Objects.nonNull(request.getPrice())) {
+            loadCertificate.setPrice(request.getPrice());
+        }
+        if (Objects.nonNull(request.getDuration())) {
+            loadCertificate.setDuration(request.getDuration());
+        }
+        if (Objects.nonNull(request.getCreateDate())) {
+            loadCertificate.setCreateDate(request.getCreateDate());
+        }
+        if (Objects.nonNull(request.getLastUpdateDate())) {
+            loadCertificate.setLastUpdateDate(request.getLastUpdateDate());
+        }
+        if (Objects.nonNull(request.getTagList())) {
+            loadCertificate.setTagList(request.getTagList());
+        }
+
+        session.saveOrUpdate(loadCertificate);
         transaction.commit();
         session.close();
         return true;
     }
 
     @Override
-    public boolean delete(Long id) {
+    public Long delete(Long id) {
 
         Session session = this.sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("delete from GiftCertificate c where c.id=(?1)");
-        query.setParameter(1, id);
-        query.executeUpdate();
+        GiftCertificate loadCertificate = session.load(GiftCertificate.class, id);
+        if (Objects.nonNull(loadCertificate)) {
+            session.delete(loadCertificate);
+        }
         transaction.commit();
         session.close();
-        return true;
+        return id;
     }
 }

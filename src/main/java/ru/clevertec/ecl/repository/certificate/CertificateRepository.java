@@ -16,7 +16,7 @@ public interface CertificateRepository {
 
     GiftCertificate create(GiftCertificate giftCertificate);
 
-    boolean update(Long id, UpdateCertificateRequest certificateRequest);
+    boolean update(Long id, UpdateCertificateRequest request);
 
-    boolean delete(Long id);
+    Long delete(Long id);
 }

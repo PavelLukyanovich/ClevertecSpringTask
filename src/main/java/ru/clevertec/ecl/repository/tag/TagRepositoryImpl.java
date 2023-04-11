@@ -11,6 +11,7 @@ import ru.clevertec.ecl.model.requests.tag.UpdateTagRequest;
 import ru.clevertec.ecl.utils.hibernate.HibernateUtil;
 
 import java.util.List;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -42,11 +43,11 @@ public class TagRepositoryImpl implements TagRepository {
     public Long update(Long id, UpdateTagRequest request) {
         Session session = this.sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("update Tag t set t.name=(?1), certificateList=(?2) where t.id=(?3)");
-        query.setParameter(1, request.getName());
-        query.setParameter(2, request.getCertificateList());
-        query.setParameter(3, id);
-        query.executeUpdate();
+
+        Tag loadTag = session.load(Tag.class, id);
+        loadTag.setName(request.getName());
+        loadTag.setCertificateList(request.getCertificateList());
+        session.saveOrUpdate(loadTag);
         transaction.commit();
         session.close();
         return id;
@@ -57,9 +58,10 @@ public class TagRepositoryImpl implements TagRepository {
 
         Session session = this.sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("delete from Tag t where t.id=(?1)");
-        query.setParameter(1, id);
-        query.executeUpdate();
+        Tag loadTag = session.load(Tag.class, id);
+        if (Objects.nonNull(loadTag)) {
+            session.delete(loadTag);
+        }
         transaction.commit();
         session.close();
         return id;

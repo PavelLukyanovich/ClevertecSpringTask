@@ -40,9 +40,9 @@ class CertificateServiceImplTest {
     @Test
     public void whenDeleteCertificate_thanReturnTrue() {
         Long id = 1L;
-        when(certificateRepository.delete(id)).thenReturn(true);
-        boolean result = certificateService.deleteCertificate(id);
-        assertTrue(result);
+        when(certificateRepository.delete(id)).thenReturn(1L);
+        Long result = certificateService.deleteCertificate(id);
+        assertEquals(1, result);
     }
 
     @Test

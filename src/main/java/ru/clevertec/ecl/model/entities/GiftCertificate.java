@@ -35,7 +35,7 @@ public class GiftCertificate implements BaseEntity<Long> {
     private LocalDate createDate;
     @Column(name = "last_update_date")
     private LocalDate lastUpdateDate;
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonIgnore
     @JoinTable(
             name = "certificate_tag",

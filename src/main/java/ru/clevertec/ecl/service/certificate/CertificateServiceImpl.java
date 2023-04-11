@@ -42,7 +42,7 @@ public class CertificateServiceImpl implements CertificateService {
         GiftCertificate certificateById = certificateRepository.getCertificateById(id);
         if (Objects.nonNull(certificateById)) {
             return certificateRepository.delete(id);
-        } else throw new NoSuchElementsException(certificateById);
+        } else throw new NoSuchElementsException(id);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class CertificateServiceImpl implements CertificateService {
         if (Objects.nonNull(certificateRepository.getCertificateById(id))) {
             return CertificateMapper.INSTANCE.certificateToCertificateDto(certificateRepository.getCertificateById(id));
         } else {
-            throw new NoSuchElementsException(new GiftCertificate(id, null, null, null, null, null, null, null));
+            throw new NoSuchElementsException(id);
         }
     }
 
@@ -64,7 +64,7 @@ public class CertificateServiceImpl implements CertificateService {
             certificateRepository.update(id, request);
             return true;
         } else {
-            throw new NoSuchElementsException(CertificateMapper.INSTANCE.requestToCertificate(request));
+            throw new NoSuchElementsException(id);
         }
     }
 

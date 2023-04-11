@@ -14,8 +14,8 @@ public class ApplicationExceptionHandler {
     @ExceptionHandler(NoSuchElementsException.class)
     public ErrorResponse handlerNoSuchElementsException(NoSuchElementsException e) {
 
-        return new ErrorResponse(HttpStatus.NOT_FOUND, "Certificate with current ids not founded " + "ID = " + e.getBaseEntity().getId(),
-                String.valueOf(HttpStatus.NOT_FOUND.value()) + e.getBaseEntity().getId());
+        return new ErrorResponse(HttpStatus.NOT_FOUND, "Certificate with current ids not founded " + "ID = " + e.getId(),
+                (HttpStatus.NOT_FOUND.value()) + "" + e.getId());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

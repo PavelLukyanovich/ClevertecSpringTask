@@ -40,7 +40,7 @@ public class TagServiceImpl implements TagService {
 
         if (Objects.nonNull(tagRepository.getTagById(id))) {
             return TagMapper.INSTANCE.tagToTagDto(tagRepository.getTagById(id));
-        } else throw new NoSuchElementsException(new Tag(id, null, null));
+        } else throw new NoSuchElementsException(id);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class TagServiceImpl implements TagService {
 
         if (Objects.nonNull(tagRepository.getTagById(id))) {
             return tagRepository.update(id, request);
-        } else throw new NoSuchElementsException(TagMapper.INSTANCE.requestToTag(request));
+        } else throw new NoSuchElementsException(id);
     }
 
     @Override
@@ -66,6 +66,6 @@ public class TagServiceImpl implements TagService {
 
         if (Objects.nonNull(tagRepository.getTagById(id))) {
             return tagRepository.delete(id);
-        } else throw new NoSuchElementsException(new Tag(id, null, null));
+        } else throw new NoSuchElementsException(id);
     }
 }

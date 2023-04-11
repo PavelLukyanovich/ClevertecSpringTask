@@ -12,7 +12,6 @@ import ru.clevertec.ecl.model.requests.certificate.UpdateCertificateRequest;
 import ru.clevertec.ecl.repository.certificate.CertificateRepository;
 import ru.clevertec.ecl.utils.mapper.CertificateMapper;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -56,7 +55,6 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
-    @Transactional
     public boolean updateCertificate(Long id, UpdateCertificateRequest request) {
 
         GiftCertificate certificateById = certificateRepository.getCertificateById(id);

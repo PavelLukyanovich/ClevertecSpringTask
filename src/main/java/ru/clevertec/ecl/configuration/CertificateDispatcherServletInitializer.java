@@ -1,5 +1,5 @@
 package ru.clevertec.ecl.configuration;
-
+/*
 import jakarta.servlet.FilterRegistration;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletRegistration;
@@ -51,4 +51,4 @@ public class CertificateDispatcherServletInitializer extends
     protected String[] getServletMappings() {
         return new String[0];
     }
-}
+}*/

@@ -3,13 +3,12 @@ package ru.clevertec.ecl.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import ru.clevertec.ecl.model.dtos.CertificateDto;
 import ru.clevertec.ecl.model.dtos.CertificateParamDto;
+import ru.clevertec.ecl.model.entities.GiftCertificate;
 import ru.clevertec.ecl.model.requests.certificate.CreateCertificateRequest;
 import ru.clevertec.ecl.model.requests.certificate.UpdateCertificateRequest;
 import ru.clevertec.ecl.service.certificate.CertificateService;
 import ru.clevertec.ecl.utils.SortType;
-
 
 import java.util.List;
 
@@ -23,11 +22,11 @@ public class CertificatesController {
 
 
     @GetMapping()
-    public List<CertificateDto> getCertificatesBy(@RequestParam(required = false) String tagName,
-                                                  @RequestParam(required = false) String certName,
-                                                  @RequestParam(required = false) String certDescription,
-                                                  @RequestParam(required = false) SortType sortDate,
-                                                  @RequestParam(required = false) SortType sortName) {
+    public List<GiftCertificate> getCertificatesBy(@RequestParam(required = false) String tagName,
+                                                   @RequestParam(required = false) String certName,
+                                                   @RequestParam(required = false) String certDescription,
+                                                   @RequestParam(required = false) SortType sortDate,
+                                                   @RequestParam(required = false) SortType sortName) {
 
         CertificateParamDto certificateParam = new CertificateParamDto();
         certificateParam.setTagName(tagName);
@@ -41,13 +40,13 @@ public class CertificatesController {
 
     @GetMapping("/{id}")
 
-    public CertificateDto getCertificateById(@PathVariable("id") Long id) {
+    public GiftCertificate getCertificateById(@PathVariable("id") Long id) {
         return certificateService.getCertificateById(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 
-    public CertificateDto createCertificate(@RequestBody CreateCertificateRequest request) {
+    public GiftCertificate createCertificate(@RequestBody CreateCertificateRequest request) {
         return certificateService.createCertificate(request);
     }
 
@@ -59,8 +58,8 @@ public class CertificatesController {
 
     @DeleteMapping("/{id}")
 
-    public Long deleteCertificate(@PathVariable Long id) {
-        return certificateService.deleteCertificate(id);
+    public void deleteCertificate(@PathVariable Long id) {
+        certificateService.deleteCertificate(id);
     }
 
 }

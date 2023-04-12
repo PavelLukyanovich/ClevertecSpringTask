@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.clevertec.ecl.model.dtos.TagDto;
+import ru.clevertec.ecl.model.entities.Tag;
 import ru.clevertec.ecl.model.requests.tag.CreateTagRequest;
 import ru.clevertec.ecl.model.requests.tag.UpdateTagRequest;
 import ru.clevertec.ecl.service.tag.TagService;
@@ -34,13 +35,13 @@ public class TagController {
     }
 
     @PutMapping("/{id}")
-    public Long updateTag(@RequestBody UpdateTagRequest request, @PathVariable Long id) {
+    public Tag updateTag(@RequestBody UpdateTagRequest request, @PathVariable Long id) {
         return tagService.updateTag(id, request);
     }
 
     @DeleteMapping("/{id}")
-    public Long deleteTag(@PathVariable Long id) {
-        return tagService.deleteTag(id);
+    public void deleteTag(@PathVariable Long id) {
+        tagService.deleteTag(id);
     }
 }
 

@@ -3,7 +3,6 @@ package ru.clevertec.ecl.service.tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.clevertec.ecl.exceptions.JsonParseException;
-import ru.clevertec.ecl.exceptions.NoSuchElementsException;
 import ru.clevertec.ecl.model.dtos.TagDto;
 import ru.clevertec.ecl.model.entities.Tag;
 import ru.clevertec.ecl.model.requests.tag.CreateTagRequest;
@@ -26,7 +25,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public List<TagDto> getTags() {
 
-        List<Tag> tags = tagRepository.getTags();
+        List<Tag> tags = tagRepository.findAll();
         LOGGER.log(Level.INFO, "tagList from repo" + tags);
         List<TagDto> tagDtos = tags.stream()
                 .map(TagMapper.INSTANCE::tagToTagDto)
@@ -38,34 +37,31 @@ public class TagServiceImpl implements TagService {
     @Override
     public TagDto getTagById(Long id) {
 
-        if (Objects.nonNull(tagRepository.getTagById(id))) {
-            return TagMapper.INSTANCE.tagToTagDto(tagRepository.getTagById(id));
-        } else throw new NoSuchElementsException(id);
+        return TagMapper.INSTANCE.tagToTagDto(tagRepository.getById(id));
     }
 
     @Override
     public TagDto createTag(CreateTagRequest request) {
 
         Tag tagFromRequest = TagMapper.INSTANCE.requestToTag(request);
-        TagDto resultTagDto = TagMapper.INSTANCE.tagToTagDto(tagRepository.create(tagFromRequest));
+        TagDto resultTagDto = TagMapper.INSTANCE.tagToTagDto(tagRepository.save(tagFromRequest));
 
         if (Objects.equals(resultTagDto.getName(), tagFromRequest.getName())) {
             return resultTagDto;
         } else throw new JsonParseException();
     }
 
-    public Long updateTag(Long id, UpdateTagRequest request) {
+    public Tag updateTag(Long id, UpdateTagRequest request) {
 
-        if (Objects.nonNull(tagRepository.getTagById(id))) {
-            return tagRepository.update(id, request);
-        } else throw new NoSuchElementsException(id);
+        Tag byId = tagRepository.getById(id);
+        byId.setName(request.getName());
+        byId.setCertificateList(request.getCertificateList());
+        return tagRepository.save(byId);
     }
 
     @Override
-    public Long deleteTag(Long id) {
+    public void deleteTag(Long id) {
 
-        if (Objects.nonNull(tagRepository.getTagById(id))) {
-            return tagRepository.delete(id);
-        } else throw new NoSuchElementsException(id);
+        tagRepository.deleteById(id);
     }
 }

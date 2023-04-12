@@ -4,6 +4,7 @@ import lombok.Data;
 import ru.clevertec.ecl.model.entities.Order;
 
 import java.util.List;
+
 @Data
 public class UserDto {
 

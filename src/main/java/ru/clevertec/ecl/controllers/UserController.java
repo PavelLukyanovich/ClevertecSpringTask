@@ -1,12 +1,9 @@
 package ru.clevertec.ecl.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.web.bind.annotation.*;
 import ru.clevertec.ecl.model.dtos.UserDto;
-import ru.clevertec.ecl.model.entities.User;
 import ru.clevertec.ecl.service.user.UserService;
 
 import java.util.List;
@@ -19,12 +16,15 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping()
-    public List<User> getUsers() {
-        return userService.getUsers();
+    public List<UserDto> getUsers(@RequestParam(required = false, defaultValue = "0") int page,
+                                  @RequestParam(required = false, defaultValue = "2") int size) {
+
+        return userService.getUsers(PageRequest.of(page, size));
     }
 
     @GetMapping("/{id}")
     public UserDto getUserById(@PathVariable Long id) {
+
         return userService.getUserById(id);
     }
 

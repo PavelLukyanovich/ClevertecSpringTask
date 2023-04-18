@@ -1,10 +1,7 @@
 package ru.clevertec.ecl.model.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDate;
 
 @Data
 @Entity
@@ -20,16 +17,14 @@ public class Order implements BaseEntity<Long> {
     @Column(name = "order_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "user_id", insertable = false, updatable = false)
-    Long userId;
-    @Column(name = "certificate_id")
-    Long certificateId;
-    @Column(name = "order_price")
-    Integer orderPrice;
+    @Column(name = "order_price", updatable = false)
+    private Integer orderPrice;
     @Column(name = "order_date")
-    LocalDate orderDate;
-    @ManyToOne
+    private String orderDate;
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @JoinColumn(name = "certificate_id")
+    private GiftCertificate certificate;
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     private User user;
 }

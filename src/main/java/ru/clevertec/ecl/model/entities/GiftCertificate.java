@@ -5,13 +5,13 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@Builder
 @DynamicUpdate
 @EqualsAndHashCode
 @NoArgsConstructor
@@ -21,20 +21,20 @@ public class GiftCertificate implements BaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "certificateid", nullable = false)
+    @Column(name = "certificateid", nullable = false, updatable = false)
     private Long id;
-    @Column(name = "name")
+    @Column(name = "name", updatable = false)
     private String name;
-    @Column(name = "description")
+    @Column(name = "description", updatable = false)
     private String description;
     @Column(name = "price")
     private Integer price;
     @Column(name = "duration")
     private Integer duration;
-    @Column(name = "create_date")
-    private LocalDate createDate;
+    @Column(name = "create_date", updatable = false)
+    private String createDate;
     @Column(name = "last_update_date")
-    private LocalDate lastUpdateDate;
+    private String lastUpdateDate;
     @ManyToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonIgnore
     @JoinTable(
@@ -44,8 +44,4 @@ public class GiftCertificate implements BaseEntity<Long> {
     )
     private List<Tag> tagList = new ArrayList<>();
 
-    public void addTag(Tag tag) {
-        tag.setCertificateList(List.of(this));
-        tagList.add(tag);
-    }
 }

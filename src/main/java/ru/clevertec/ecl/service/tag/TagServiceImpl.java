@@ -1,6 +1,7 @@
 package ru.clevertec.ecl.service.tag;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.clevertec.ecl.exceptions.JsonParseException;
 import ru.clevertec.ecl.model.dtos.TagDto;
@@ -23,7 +24,7 @@ public class TagServiceImpl implements TagService {
     private final TagRepository tagRepository;
 
     @Override
-    public List<TagDto> getTags() {
+    public List<TagDto> getTags(PageRequest of) {
 
         List<Tag> tags = tagRepository.findAll();
         LOGGER.log(Level.INFO, "tagList from repo" + tags);
@@ -53,7 +54,7 @@ public class TagServiceImpl implements TagService {
 
     public Tag updateTag(Long id, UpdateTagRequest request) {
 
-        Tag byId = tagRepository.getById(id);
+        Tag byId = tagRepository.getReferenceById(id);
         byId.setName(request.getName());
         byId.setCertificateList(request.getCertificateList());
         return tagRepository.save(byId);

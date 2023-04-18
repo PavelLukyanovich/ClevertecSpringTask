@@ -11,23 +11,22 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
 public class User implements BaseEntity<Long> {
     @Id
-    @Column(name = "user_id", insertable = false, updatable = false)
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.REFRESH})
     @JsonIgnore
     private List<Order> orderList;
-
-
 }

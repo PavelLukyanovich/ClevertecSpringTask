@@ -8,4 +8,6 @@ import ru.clevertec.ecl.model.entities.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>, PagingAndSortingRepository<User, Long> {
 
+
+
 }

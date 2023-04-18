@@ -1,21 +1,23 @@
 package ru.clevertec.ecl.service.certificate;
 
+import org.springframework.data.domain.PageRequest;
+import ru.clevertec.ecl.model.dtos.CertificateDto;
 import ru.clevertec.ecl.model.dtos.CertificateParamDto;
-import ru.clevertec.ecl.model.entities.GiftCertificate;
 import ru.clevertec.ecl.model.requests.certificate.CreateCertificateRequest;
-import ru.clevertec.ecl.model.requests.certificate.UpdateCertificateRequest;
 
 import java.util.List;
 
 public interface CertificateService {
 
-    GiftCertificate createCertificate(CreateCertificateRequest request);
+    CertificateDto createCertificate(CreateCertificateRequest request);
 
     void deleteCertificate(Long id);
 
-    GiftCertificate getCertificateById(Long id);
+    CertificateDto getCertificateById(Long id);
 
-    boolean updateCertificate(Long id, UpdateCertificateRequest request);
+    boolean updatePriceCertificate(Long id, CertificateParamDto certificateParamDto);
 
-    List<GiftCertificate> getCertificates(CertificateParamDto certificateParamDto);
+    boolean updateDurationCertificate(Long id, CertificateParamDto certificateParamDto);
+
+    List<CertificateDto> getCertificates(CertificateParamDto certificateParamDto, PageRequest of);
 }

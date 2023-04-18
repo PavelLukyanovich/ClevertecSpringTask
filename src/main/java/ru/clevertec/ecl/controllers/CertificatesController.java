@@ -1,12 +1,12 @@
 package ru.clevertec.ecl.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import ru.clevertec.ecl.model.dtos.CertificateDto;
 import ru.clevertec.ecl.model.dtos.CertificateParamDto;
-import ru.clevertec.ecl.model.entities.GiftCertificate;
 import ru.clevertec.ecl.model.requests.certificate.CreateCertificateRequest;
-import ru.clevertec.ecl.model.requests.certificate.UpdateCertificateRequest;
 import ru.clevertec.ecl.service.certificate.CertificateService;
 import ru.clevertec.ecl.utils.SortType;
 
@@ -22,11 +22,13 @@ public class CertificatesController {
 
 
     @GetMapping()
-    public List<GiftCertificate> getCertificatesBy(@RequestParam(required = false) String tagName,
-                                                   @RequestParam(required = false) String certName,
-                                                   @RequestParam(required = false) String certDescription,
-                                                   @RequestParam(required = false) SortType sortDate,
-                                                   @RequestParam(required = false) SortType sortName) {
+    public List<CertificateDto> getCertificatesBy(@RequestParam(required = false) String tagName,
+                                                  @RequestParam(required = false) String certName,
+                                                  @RequestParam(required = false) String certDescription,
+                                                  @RequestParam(required = false) SortType sortDate,
+                                                  @RequestParam(required = false) SortType sortName,
+                                                  @RequestParam(required = false, defaultValue = "0") int page,
+                                                  @RequestParam(required = false, defaultValue = "2") int size) {
 
         CertificateParamDto certificateParam = new CertificateParamDto();
         certificateParam.setTagName(tagName);
@@ -34,26 +36,40 @@ public class CertificatesController {
         certificateParam.setCertDescription(certDescription);
         certificateParam.setSortDate(sortDate);
         certificateParam.setSortName(sortName);
-        System.out.println(certificateParam);
-        return certificateService.getCertificates(certificateParam);
+
+        return certificateService.getCertificates(certificateParam, PageRequest.of(page, size));
     }
 
     @GetMapping("/{id}")
 
-    public GiftCertificate getCertificateById(@PathVariable("id") Long id) {
+    public CertificateDto getCertificateById(@PathVariable("id") Long id) {
         return certificateService.getCertificateById(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 
-    public GiftCertificate createCertificate(@RequestBody CreateCertificateRequest request) {
+    public CertificateDto createCertificate(@RequestBody CreateCertificateRequest request) {
         return certificateService.createCertificate(request);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/duration/{id}")
 
-    public boolean updateCertificate(@RequestBody UpdateCertificateRequest request, @PathVariable Long id) {
-        return certificateService.updateCertificate(id, request);
+    public boolean updateDurationCertificate(@RequestParam Integer duration, @PathVariable Long id) {
+
+        CertificateParamDto certificateParamDto = new CertificateParamDto();
+        certificateParamDto.setDuration(duration);
+
+        return certificateService.updateDurationCertificate(id, certificateParamDto);
+    }
+
+    @PutMapping("/price/{id}")
+
+    public boolean updatePriceCertificate(@RequestParam Integer price, @PathVariable Long id) {
+
+        CertificateParamDto certificateParamDto = new CertificateParamDto();
+        certificateParamDto.setPrice(price);
+
+        return certificateService.updatePriceCertificate(id, certificateParamDto);
     }
 
     @DeleteMapping("/{id}")

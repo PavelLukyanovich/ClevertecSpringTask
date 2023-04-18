@@ -1,13 +1,13 @@
 package ru.clevertec.ecl.service.user;
 
+import org.springframework.data.domain.PageRequest;
 import ru.clevertec.ecl.model.dtos.UserDto;
-import ru.clevertec.ecl.model.entities.User;
 
 import java.util.List;
 
 public interface UserService {
 
-    List<User> getUsers();
+    List<UserDto> getUsers(PageRequest of);
 
     UserDto getUserById(Long id);
 }

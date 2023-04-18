@@ -3,7 +3,6 @@ package ru.clevertec.ecl.model.dtos;
 import lombok.Data;
 import ru.clevertec.ecl.model.entities.Tag;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -14,7 +13,7 @@ public class CertificateDto {
     private String description;
     private Integer price;
     private Integer duration;
-    private LocalDate createDate;
-    private LocalDate lastUpdateDate;
+    private String createDate;
+    private String lastUpdateDate;
     private List<Tag> tagList;
 }

@@ -25,9 +25,5 @@ public class Tag implements BaseEntity<Long> {
     @JsonIgnore
     private List<GiftCertificate> certificateList = new ArrayList<>();
 
-    public void addCertificate(GiftCertificate certificate) {
-        certificate.setTagList(List.of(this));
-        certificateList.add(certificate);
-    }
 }
 

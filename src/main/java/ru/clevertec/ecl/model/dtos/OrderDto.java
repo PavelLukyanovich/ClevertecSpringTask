@@ -7,7 +7,8 @@ import ru.clevertec.ecl.model.entities.User;
 public class OrderDto {
 
     private Long id;
-    private Long userId;
+    private String orderDate;
+    private Integer price;
     private Long certificateId;
-    private User user;
+    private Long userId;
 }

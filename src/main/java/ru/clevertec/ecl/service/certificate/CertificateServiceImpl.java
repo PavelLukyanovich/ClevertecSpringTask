@@ -1,77 +1,114 @@
 package ru.clevertec.ecl.service.certificate;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import ru.clevertec.ecl.exceptions.JsonParseException;
-import ru.clevertec.ecl.exceptions.NoSuchElementsException;
 import ru.clevertec.ecl.model.dtos.CertificateDto;
 import ru.clevertec.ecl.model.dtos.CertificateParamDto;
 import ru.clevertec.ecl.model.entities.GiftCertificate;
 import ru.clevertec.ecl.model.requests.certificate.CreateCertificateRequest;
-import ru.clevertec.ecl.model.requests.certificate.UpdateCertificateRequest;
 import ru.clevertec.ecl.repository.certificate.CertificateRepository;
+import ru.clevertec.ecl.utils.SortType;
 import ru.clevertec.ecl.utils.mapper.CertificateMapper;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import static ru.clevertec.ecl.service.certificate.CertificateSpecifications.*;
+import static ru.clevertec.ecl.utils.DateTime.getDate;
 
 @Service
 @RequiredArgsConstructor
 public class CertificateServiceImpl implements CertificateService {
 
-    private static final Logger LOGGER = Logger.getLogger(CertificateServiceImpl.class.getName());
+
     private final CertificateRepository certificateRepository;
 
     @Override
     public CertificateDto createCertificate(CreateCertificateRequest request) {
+
         GiftCertificate certificateFromRequest = CertificateMapper.INSTANCE.requestToCertificate(request);
-        LOGGER.log(Level.INFO, "mapped certificate name " + certificateFromRequest.getName());
-        CertificateDto createdCertificateDto = CertificateMapper.INSTANCE.certificateToCertificateDto(certificateFromRequest);
-        if (certificateFromRequest.equals(CertificateMapper.INSTANCE.certificateDtoToCertificate(createdCertificateDto))) {
-            certificateRepository.create(certificateFromRequest);
-            return createdCertificateDto;
-        } else throw new JsonParseException();
+        certificateFromRequest.setCreateDate(getDate());
+        certificateFromRequest.setLastUpdateDate(getDate());
+        certificateRepository.save(certificateFromRequest);
+        return CertificateMapper.INSTANCE.certificateToCertificateDto(certificateFromRequest);
+
     }
 
     @Override
-    public Long deleteCertificate(Long id) {
+    public void deleteCertificate(Long id) {
 
-        GiftCertificate certificateById = certificateRepository.getCertificateById(id);
-        if (Objects.nonNull(certificateById)) {
-            return certificateRepository.delete(id);
-        } else throw new NoSuchElementsException(id);
+        certificateRepository.deleteById(id);
     }
 
     @Override
     public CertificateDto getCertificateById(Long id) {
 
-        if (Objects.nonNull(certificateRepository.getCertificateById(id))) {
-            return CertificateMapper.INSTANCE.certificateToCertificateDto(certificateRepository.getCertificateById(id));
-        } else {
-            throw new NoSuchElementsException(id);
-        }
+        GiftCertificate certificate = certificateRepository.getReferenceById(id);
+        CertificateDto certificateDto = CertificateMapper.INSTANCE.certificateToCertificateDto(certificate);
+
+        return certificateDto;
+
     }
 
     @Override
-    @Transactional
-    public boolean updateCertificate(Long id, UpdateCertificateRequest request) {
+    public boolean updatePriceCertificate(Long id, CertificateParamDto certificateParamDto) {
 
-        GiftCertificate certificateById = certificateRepository.getCertificateById(id);
-        if (Objects.nonNull(certificateById)) {
-            certificateRepository.update(id, request);
-            return true;
-        } else {
-            throw new NoSuchElementsException(id);
-        }
+        GiftCertificate certificate = certificateRepository.getReferenceById(id);
+        certificate.setPrice(certificateParamDto.getPrice());
+        certificate.setLastUpdateDate(getDate());
+
+        certificateRepository.save(certificate);
+
+        return true;
     }
 
     @Override
-    public List<CertificateDto> getCertificates(CertificateParamDto certificateParamDto) {
+    public boolean updateDurationCertificate(Long id, CertificateParamDto certificateParamDto) {
 
-        List<GiftCertificate> certificates = certificateRepository.getCertificates(certificateParamDto);
-        return certificates.stream().map(CertificateMapper.INSTANCE::certificateToCertificateDto).toList();
+        GiftCertificate certificate = certificateRepository.getReferenceById(id);
+        certificate.setDuration(certificateParamDto.getDuration());
+        certificate.setLastUpdateDate(getDate());
+
+        certificateRepository.save(certificate);
+
+        return true;
+    }
+
+    @Override
+    public List<CertificateDto> getCertificates(CertificateParamDto certificateParamDto, PageRequest of) {
+
+        Specification<GiftCertificate> specification = Specification
+                .where(certificateParamDto.getCertName() == null ? null : certNameContains(certificateParamDto))
+                .and(certificateParamDto.getTagName() == null ? null : tagNameContains(certificateParamDto))
+                .and(certificateParamDto.getCertDescription() == null ? null : certDescriptionContains(certificateParamDto))
+                .and(certificateParamDto.getSortDate() == null ? null : Objects.requireNonNull(checkDateSortType(certificateParamDto.getSortDate()))
+                        .and(certificateParamDto.getSortName() == null ? null : checkNameSortType(certificateParamDto.getSortName())));
+
+        Page<GiftCertificate> certificates = certificateRepository.findAll(specification, of);
+
+        return certificates.getContent().stream().map(CertificateMapper.INSTANCE::certificateToCertificateDto).toList();
+    }
+
+    private static Specification<GiftCertificate> checkDateSortType(SortType sortType) {
+
+        if (sortType.name().equals("ASC")) {
+            return sortDateContainsASC();
+        } else if (sortType.name().equals("DESC")) {
+            return sortDateContainsDESC();
+        }
+        return null;
+    }
+
+    private static Specification<GiftCertificate> checkNameSortType(SortType sortType) {
+
+        if (sortType.name().equals("ASC")) {
+            return sortNameContainsASC();
+        } else if (sortType.name().equals("DESC")) {
+            return sortNameContainsDESC();
+        }
+        return null;
     }
 }

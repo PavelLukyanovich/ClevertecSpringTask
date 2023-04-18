@@ -1,9 +1,9 @@
 package ru.clevertec.ecl.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.*;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +25,5 @@ public class Tag implements BaseEntity<Long> {
     @JsonIgnore
     private List<GiftCertificate> certificateList = new ArrayList<>();
 
-    public void addCertificate(GiftCertificate certificate) {
-        certificate.setTagList(List.of(this));
-        certificateList.add(certificate);
-    }
 }
 

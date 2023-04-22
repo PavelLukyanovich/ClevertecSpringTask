@@ -40,7 +40,7 @@ public class CertificateServiceImpl implements CertificateService {
     @Override
     public void deleteCertificate(Long id) {
 
-        certificateRepository.deleteById(id);
+       certificateRepository.deleteById(id);
     }
 
     @Override

@@ -2,6 +2,7 @@ package ru.clevertec.ecl.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.clevertec.ecl.model.dtos.UserDto;
 import ru.clevertec.ecl.service.user.UserService;
@@ -22,7 +23,8 @@ public class UserController {
         return userService.getUsers(PageRequest.of(page, size));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}")
+    @ResponseBody
     public UserDto getUserById(@PathVariable Long id) {
 
         return userService.getUserById(id);

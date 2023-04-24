@@ -1,14 +1,11 @@
 package ru.clevertec.ecl.integration.service.user;
 
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import ru.clevertec.ecl.integration.BaseTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import ru.clevertec.ecl.integration.BaseTest;
 import ru.clevertec.ecl.model.dtos.UserDto;
-import ru.clevertec.ecl.model.entities.User;
 import ru.clevertec.ecl.service.user.UserService;
 
 import java.util.List;

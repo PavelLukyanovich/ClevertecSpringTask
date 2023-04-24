@@ -3,10 +3,8 @@ package ru.clevertec.ecl.integration.service.order;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import ru.clevertec.ecl.integration.BaseTest;
 import ru.clevertec.ecl.model.entities.Order;
-import ru.clevertec.ecl.repository.order.OrderRepository;
 import ru.clevertec.ecl.service.order.OrderService;
 
 import java.util.List;
@@ -16,9 +14,6 @@ public class OrderServiceTest extends BaseTest {
 
     @Autowired
     private OrderService orderService;
-
-    @Autowired
-    private OrderRepository orderRepository;
 
     @Test
     void whenGetOrders_shouldReturnAllOrders() {
@@ -34,10 +29,12 @@ public class OrderServiceTest extends BaseTest {
     @Test
     void whenGetUserOrderInformation_shouldReturnOnlyPriceAndDate() {
         List<Order> orders = orderService.getOrders();
+        System.out.println(orders.size());
         Order order = orders.get(2);
+        System.out.println(order.getOrderPrice());
 
-        Map<Integer, String> expectedInfo = orderService.getUserOrderInformation(order.getId());
-
-        Assertions.assertThat(expectedInfo.get(300)).isNotNull();
+        Map<Integer, String> expectedInfo = orderService.getUserOrderInformation(order.getUser().getId());
+        System.out.println(expectedInfo);
+        Assertions.assertThat(expectedInfo.get(300)).isEqualTo("2000-03-01");
     }
 }

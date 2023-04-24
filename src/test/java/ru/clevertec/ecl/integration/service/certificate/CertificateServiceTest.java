@@ -5,6 +5,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import ru.clevertec.ecl.integration.BaseTest;
 import ru.clevertec.ecl.model.dtos.CertificateDto;
 import ru.clevertec.ecl.model.dtos.CertificateParamDto;
@@ -15,13 +16,11 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-
 public class CertificateServiceTest extends BaseTest {
 
     @Autowired
     private CertificateService certificateService;
-    @Autowired
-    private EntityManager entityManager;
+
 
     @Test
     void whenCreateCertificate_ShouldReturnCertificateWithNonNullId() {
@@ -36,7 +35,6 @@ public class CertificateServiceTest extends BaseTest {
     void whenDeleteCertificate_GetCertificateByIdShouldThrowException() {
         Long id = 1L;
         certificateService.deleteCertificate(id);
-        entityManager.flush();
 
         assertThatThrownBy(() -> certificateService.getCertificateById(id));
 
@@ -81,14 +79,16 @@ public class CertificateServiceTest extends BaseTest {
         assertThat(haveBeenUpdated).isTrue();
     }
 
-/*    @Test
+    @Test
     void whenGetCertificates_ShouldReturnAllCertificates() {
         int expectedAmount = 3;
         CertificateParamDto param = new CertificateParamDto();
+        System.out.println(param);
 
-        List<CertificateDto> allCertificates = certificateService.getCertificates(param, PageRequest.of(1,5));
+        List<CertificateDto> allCertificates = certificateService.getCertificates(param, PageRequest.of(0,3));
+        System.out.println(allCertificates.size());
 
         Assertions.assertThat(allCertificates).hasSize(expectedAmount);
-    }*/
+    }
 
 }

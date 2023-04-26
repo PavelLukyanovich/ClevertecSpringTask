@@ -96,7 +96,7 @@ public class CertificateControllerTest extends BaseTest {
 
     }
 
-    public static GiftCertificate createCertificate() {
+    private static GiftCertificate createCertificate() {
 
         return new GiftCertificate(
                 4L,

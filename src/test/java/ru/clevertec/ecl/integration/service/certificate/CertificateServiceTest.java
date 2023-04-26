@@ -1,11 +1,9 @@
 package ru.clevertec.ecl.integration.service.certificate;
 
-import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import ru.clevertec.ecl.integration.BaseTest;
 import ru.clevertec.ecl.model.dtos.CertificateDto;
 import ru.clevertec.ecl.model.dtos.CertificateParamDto;
@@ -16,6 +14,7 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+
 public class CertificateServiceTest extends BaseTest {
 
     @Autowired
@@ -85,7 +84,7 @@ public class CertificateServiceTest extends BaseTest {
         CertificateParamDto param = new CertificateParamDto();
         System.out.println(param);
 
-        List<CertificateDto> allCertificates = certificateService.getCertificates(param, PageRequest.of(0,3));
+        List<CertificateDto> allCertificates = certificateService.getCertificates(param, PageRequest.of(0, 3));
         System.out.println(allCertificates.size());
 
         Assertions.assertThat(allCertificates).hasSize(expectedAmount);

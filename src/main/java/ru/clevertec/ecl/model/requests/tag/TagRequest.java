@@ -1,5 +1,6 @@
 package ru.clevertec.ecl.model.requests.tag;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import ru.clevertec.ecl.model.entities.GiftCertificate;
 

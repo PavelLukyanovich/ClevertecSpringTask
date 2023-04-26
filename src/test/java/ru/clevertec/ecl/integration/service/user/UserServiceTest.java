@@ -26,11 +26,11 @@ public class UserServiceTest extends BaseTest {
     @Test
     void whenGetUserById_shouldReturnUserWithCurrentId() {
 
-    Long expectedId = 3L;
+        Long expectedId = 3L;
 
-    UserDto actualUser = userService.getUserById(expectedId);
+        UserDto actualUser = userService.getUserById(expectedId);
 
-    Assertions.assertThat(actualUser.getId()).isEqualTo(expectedId);
+        Assertions.assertThat(actualUser.getId()).isEqualTo(expectedId);
     }
 }
 

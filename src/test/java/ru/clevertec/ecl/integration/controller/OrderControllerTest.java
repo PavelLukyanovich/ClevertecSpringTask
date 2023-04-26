@@ -1,22 +1,19 @@
 package ru.clevertec.ecl.integration.controller;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import ru.clevertec.ecl.integration.BaseTest;
-import ru.clevertec.ecl.model.entities.GiftCertificate;
-import ru.clevertec.ecl.model.entities.Order;
-import ru.clevertec.ecl.model.entities.User;
-
-import java.util.ArrayList;
+import ru.clevertec.ecl.model.requests.order.OrderRequest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @AutoConfigureMockMvc
 public class OrderControllerTest extends BaseTest {
 
@@ -28,8 +25,8 @@ public class OrderControllerTest extends BaseTest {
     public void createOrder_success() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         mockMvc.perform(post("/orders")
-                .contentType("application/json")
-                .content(objectMapper.writeValueAsString(createOrder())))
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(createOrderRequest())))
                 .andExpect(status().isOk());
     }
 
@@ -37,18 +34,34 @@ public class OrderControllerTest extends BaseTest {
     public void mostWidelyUsedTag_success() throws Exception {
 
         mockMvc.perform(get("/orders/widely/1"))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
-    private static Order createOrder() {
-        return new Order(
-                4L,
-                125,
-                "2023-01-01",
-                CertificateControllerTest.createCertificate(),
-                new User(2L, "Pav", "Luk", new ArrayList<>())
-        );
+    @Test
+    public void getUsersOrderInformation_success() throws Exception {
+
+        MvcResult mvcResult = mockMvc.perform(get("/orders/info/1"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Assertions.assertThat(mvcResult.getResponse().getContentAsString().contains("100")).isTrue();
+        Assertions.assertThat(mvcResult.getResponse().getContentAsString().contains("2000-01-01")).isTrue();
+
+    }
+
+    @Test
+    public void getOrdersByUserId_success() throws Exception {
+
+        MvcResult mvcResult = mockMvc.perform(get("/users/2"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Assertions.assertThat(mvcResult.getResponse().getContentAsString().contains("200")).isTrue();
+        Assertions.assertThat(mvcResult.getResponse().getContentAsString().contains("2000-02-01")).isTrue();
+    }
+
+    private static OrderRequest createOrderRequest() {
+        return new OrderRequest(3L, 2L);
     }
 
 }

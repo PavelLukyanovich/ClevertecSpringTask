@@ -2,6 +2,7 @@ package ru.clevertec.ecl.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.clevertec.ecl.exceptions.NoSuchElementsException;
 import ru.clevertec.ecl.model.dtos.OrderDto;
@@ -46,7 +47,7 @@ public class OrderController {
         return orderService.getOrdersByUserId(id, PageRequest.of(page, size));
     }
 
-    @GetMapping("/widely/{id}")
+    @GetMapping(value = "/widely/{id}")
     public TagDto mostWidelyUsedTag(@PathVariable Long id) {
 
         return TagMapper.INSTANCE.tagToTagDto(orderService.getMostWidelyUsedTag(id));
